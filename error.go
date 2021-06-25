@@ -60,8 +60,11 @@ func isRedisError(err error) bool {
 }
 
 func isBadConn(err error, allowTimeout bool) bool {
-	if err == nil {
+	switch err {
+	case nil:
 		return false
+	case io.EOF, io.ErrUnexpectedEOF:
+		return true
 	}
 	if isRedisError(err) {
 		// Close connections in read only state in case domain addr is used

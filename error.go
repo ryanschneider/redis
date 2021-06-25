@@ -71,6 +71,8 @@ func isBadConn(err error, allowTimeout bool) bool {
 		return false
 	case context.Canceled, context.DeadlineExceeded:
 		return true
+	case io.EOF, io.ErrUnexpectedEOF:
+		return true
 	}
 
 	if isRedisError(err) {
